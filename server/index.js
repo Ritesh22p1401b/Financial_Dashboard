@@ -31,18 +31,20 @@ app.use("/transaction", transactionRoutes);
 
 /* MONGOOSE SETUP */
 const PORT = process.env.PORT || 9000;
-mongoose
-  .connect(process.env.MONGO_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(async () => {
-    app.listen(PORT, () => console.log(`Server Port: ${PORT}`));
 
-    /* ADD DATA ONE TIME ONLY OR AS NEEDED */
+mongoose
+  .connect(process.env.MONGO_URL) 
+  .then(async () => {
+    console.log("✅ MongoDB connection successful!");
+    app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+
+    /* ⚠️ ADD DATA ONE TIME ONLY (uncomment when needed) */
     // await mongoose.connection.db.dropDatabase();
-    // KPI.insertMany(kpis);
-    // Product.insertMany(products);
-    // Transaction.insertMany(transactions);
+    // await KPI.insertMany(kpis);
+    // await Product.insertMany(products);
+    // await Transaction.insertMany(transactions);
+    // console.log("✅ Sample data inserted successfully!");
   })
-  .catch((error) => console.log(`${error} did not connect`));
+  .catch((error) => {
+    console.error("❌ MongoDB connection failed:", error.message);
+  });
